@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<html>
+<head>
+<title>اعترافات ما</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="{% static 'css/web.css'%}">
+<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<div id="titleofpage">
+<h1>here you can confess to all you have done in past </h1>
+</br>
+<h2>or just what you have im mind to do ! </h2>
+</div>
+
+<a href ="{% url 'newpost' %}"class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+
+
+<div id = "posts">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+
+{% block content%}
+{% endblock %}
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+</body>
+</html>
