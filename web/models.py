@@ -9,11 +9,13 @@ from django.contrib.auth.models import User
 class Post(models.Model):
 
     confessionmodes=(
-    ('l','lie'),('s','sin'),('m','memory')
+    ('d','dream'),('f','fantasy'),('fi','first experience'),('g','guilt'),('l','lie'),('p','pain'),('q','question'),('r','random feeling'),
+    ('t','truth'),('w','wild experience'),('o','others')
     )
     text = models.CharField(max_length=300)
     confessmode= models.CharField(max_length=2,choices=confessionmodes)
     publishdate=models.DateTimeField(blank=True)
+
 
     def publish(self):
         self.publishdate=datetime.datetime.now()

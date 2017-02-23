@@ -3,6 +3,13 @@ from django.http import HttpResponse
 from web.models import Post
 from web.forms import PostForm
 import datetime
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.encoding import smart_str
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 # Create your views here.
 
 def home(request):
@@ -17,9 +24,36 @@ def singlepost(request,pk):
 
 def newpost(request):
     if (request.method=="POST"):
-        form = PostForm(request.post)
-        return HttpResponse("form submitttttted !")
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.publish()
+        return redirect('singlepost',pk=post.pk)
 
     else :
         form = PostForm()
         return render(request,'newpost.html',{'form':form})
+
+
+@csrf_exempt
+
+
+def submitapi(request):
+    posteddata= request.POST
+    text= smart_str(posteddata['text'])
+    mode= posteddata['mode']
+    if(len(text)<400):
+            newsubmit= Post(text=text,confessmode=mode)
+            newsubmit.publish()
+            return HttpResponse("ok!")
+    else:
+        return HttpResponse("nope!")
+
+
+
+
+
+
+def editpost(request):
+    form = PostForm()
+    return render('newpost.html',{'form':form})
