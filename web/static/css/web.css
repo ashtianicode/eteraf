@@ -1,17 +1,34 @@
 
 body {
+  background-image:  url({% static 'images/camp.jpg' %});
   font-family: 'Lobster'
 }
 
 
 #titleofpage {
   color:yellow;
-  background-color: black;
   margin-top: -20px;
   height : 200px;
+
 
 }
 
 #posts {
 
+}
+
+#table{
+  width:200px;
+  color: red;
+  float: right;
+  margin-top: 100px;
+  font-style: bold;
+
+
+
+}
+
+#table td {
+  float: right;
+  font-size: 20px;
 }

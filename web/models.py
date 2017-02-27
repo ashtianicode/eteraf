@@ -13,6 +13,7 @@ class Post(models.Model):
     ('t','truth'),('w','wild experience'),('o','others')
     )
     text = models.CharField(max_length=300)
+    summery = models.CharField(max_length=50,default="")
     confessmode= models.CharField(max_length=2,choices=confessionmodes)
     publishdate=models.DateTimeField(blank=True)
 

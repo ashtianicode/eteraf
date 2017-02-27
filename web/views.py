@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
+import json
 from web.models import Post
 from web.forms import PostForm
 import datetime
@@ -11,6 +12,13 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # Create your views here.
+@csrf_exempt
+
+def getposts(request):
+    posts = list(Post.objects.all().values('text'))
+    return JsonResponse(posts, safe=False)
+
+
 
 def home(request):
     posts = Post.objects.all()
@@ -41,9 +49,10 @@ def newpost(request):
 def submitapi(request):
     posteddata= request.POST
     text= smart_str(posteddata['text'])
+    summery = text[0:50]+" ..."
     mode= posteddata['mode']
     if(len(text)<400):
-            newsubmit= Post(text=text,confessmode=mode)
+            newsubmit= Post(text=text,confessmode=mode,summery=summery)
             newsubmit.publish()
             return HttpResponse("ok!")
     else:

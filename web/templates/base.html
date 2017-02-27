@@ -2,14 +2,22 @@
 <html>
 <head>
 <title>اعترافات ما</title>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="{% static 'css/web.css'%}">
 
 </head>
 
-<body>
-<div id="titleofpage">
+  <body style="background: url({% static 'images/camp.jpg' %}) no-repeat; width:100%;height:200px;">
+
+<div id="titleofpage" >
 <h1>here you can confess to all you have done in past </h1>
 </br>
 <h2>or just what you have im mind to do ! </h2>
@@ -18,7 +26,31 @@
 <a href ="{% url 'newpost' %}"class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
 
 
+<div class="container" id="table" >
 
+  <table class="table table-bordered table-hover" >
+    <thead>
+      <tr>
+        <th>موضوعات</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>یک آرزو</td>
+
+      </tr>
+      <tr>
+        <td>یک فانتزی</td>
+
+      </tr>
+      <tr>
+        <td>اولین تجربه</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 

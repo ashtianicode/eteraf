@@ -11,7 +11,7 @@
 <li>
   <a href="{% url 'editpost'  %}" class="top-menu"><span class="glyphicon glyphicon-edit" ></span></a>
   <h2>{{post.get_confessmode_display}}</h2>
-<a href="{% url 'singlepost' pk=post.pk %}">{{post}}</a><code>{{post.publishdate}}</code>
+<a href="{% url 'singlepost' pk=post.pk %}">{{post.summery}}</a>
 </li>
 {% endfor %}
 </ul>
