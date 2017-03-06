@@ -1,4 +1,7 @@
 from django.shortcuts import render,get_object_or_404
+from django.contrib.auth.models import User, Group
+from web.serializers import UserSerializer, GroupSerializer
+from rest_framework import viewsets
 from django.http import HttpResponse,JsonResponse
 import json
 from web.models import Post
@@ -14,9 +17,6 @@ sys.setdefaultencoding('utf-8')
 # Create your views here.
 @csrf_exempt
 
-def getposts(request):
-    posts = list(Post.objects.all().values('text'))
-    return JsonResponse(posts, safe=False)
 
 
 

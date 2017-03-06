@@ -1,21 +1,22 @@
 {% load staticfiles %}
 <html>
 <head>
-<title>اعترافات ما</title>
-
-<!-- Latest compiled and minified CSS -->
+<title>confession</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0-alpha1/JSXTransformer.js"></script>
 <link rel="stylesheet" href="{% static 'css/web.css'%}">
+
+
+
+
 
 </head>
 
-  <body style="background: url({% static 'images/camp.jpg' %}) no-repeat; width:100%;height:200px;">
+  <body >
 
 <div id="titleofpage" >
 <h1>here you can confess to all you have done in past </h1>
@@ -24,6 +25,7 @@
 </div>
 
 <a href ="{% url 'newpost' %}"class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+<button  onclick="renderedapp.shownextpage()" class="top-menu">next</button>
 
 
 <div class="container" id="table" >
@@ -58,14 +60,14 @@
 <div id = "posts">
   <div class="container">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-16">
 
-{% block content%}
-{% endblock %}
 
 </div>
 </div>
 </div>
+
+
 
 </div>
 
@@ -73,4 +75,80 @@
 
 
 </body>
+
+
+
+<script type="text/jsx">
+var postsjson;
+var gotthejson =false;
+class App extends React.Component{
+  constructor(){
+    super();
+    this.state={
+      pagenumber:1,
+      postsjson:"",
+    }
+
+    fetch('http://localhost:8080/api/posts/?format=json', {
+      method: 'get'
+    }).then(function(response) {
+    return  response.json().then(function(json){
+      postsjson=json;
+
+
+})
+
+});
+
+
+  }
+
+shownextpage(){
+gotthejson =true;
+  this.setState({pagenumber:this.state.pagenumber+1});
+}
+
+render(){
+  if(gotthejson>0){
+var components =[];
+for(var i=1; i<10;i++){
+  console.log(postsjson);
+  var text =postsjson[i]["text"];
+  components.push(
+      <Greeting text={text} />
+  )
+}
+}
+  return(
+    <div>
+actual fucking happens here! pagenumber {components}
+    </div>
+  )
+
+}
+
+
+
+}
+
+
+
+
+class Greeting extends React.Component {
+    render(){
+        return(
+            <div> {this.props.text} </div>
+        )
+    }
+}
+
+
+
+var renderedapp =ReactDOM.render(<App/>,document.getElementById('posts'))
+
+
+</script>
+
+
+
 </html>
