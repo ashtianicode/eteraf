@@ -1,0 +1,14 @@
+#mytable {
+  color: red;
+  border: 1px black;
+  background-color: black;
+
+}
+
+#tdata{
+  height:100px;
+
+  vertical-align: middle;
+  padding: 10px;
+
+}

@@ -1,7 +1,10 @@
+
 module.exports = {
-    entry : "./app.js" ,
+    entry : "./src/main.js" ,
     output : {
-        filename : "bundle.js"
+        filename: 'bundle.js',
+
+
     },
     module: {
         rules: [
