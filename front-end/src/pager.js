@@ -1,4 +1,5 @@
 import React from 'react';
+import "react-bootstrap"
 var postsjson;
 var gotthejson =0;
 var components =[];
@@ -31,30 +32,36 @@ export default class Pager extends React.Component{
 
 
   shownextpage(){
+    console.log(this.state.pagenumber);
     var jsonlength = Object.keys(postsjson).length/10 | 0;
-    console.log(jsonlength);
-
-    if (true){
-      console.log("helloooooo");
-      this.setState({pagenumber:1});
-      console.log("in if :",this.state.pagenumber);
-
-    }
-
     var pagenumber = this.state.pagenumber;
-    console.log("after if :",pagenumber);
     components =[];
-    for(var i = pagenumber*10  ;  i > (pagenumber*10)-10 ;  i--   ){
+    for(var i = pagenumber*6  ;  i > (pagenumber*6)-6 ;  i--   ){
       var text =postsjson[i]["text"];
-      var summery=text.slice(0,100);
+      var confessmode = postsjson[i]["confessmode"];
+      var modes= {"d":"A-DREAM.png","f":"A-DREAM.png","fi":"A-FIRST-EXPERIENCE.png","g":"A-GUILT.png","l":"A-LIE.png","p":"A-PAIN.png","q":"A-QUESTION.png","r":"A-RANDOM-FEELING.png","t":"A-TRUTH.png","w":"A-WILD-EXPERIENCE.png","o":"OTHER.png"}
+      var imgurl= "file:///home/hobbyist/t/confess/confess/front-end/src/images/"+modes[confessmode];
+      var summery=text.slice(0,150) + " ...";
       components.push(
 
-        <td id="tdata"> <a href="#"> { summery}</a> </td>
+
+        <div className="col-sm-2">
+        <a data-toggle="modal" data-target="#myModal"  class="thumbnail">
+         <img src={imgurl} />
+        { summery}
+        </a>
+        </div>
+
+
+
 
       )
     }
     this.setState({pagenumber:this.state.pagenumber+1});
-
+    if (this.state.pagenumber == jsonlength){
+      this.setState({pagenumber:1});
+      console.log("back to first");
+    }
 
 
 
@@ -71,21 +78,42 @@ export default class Pager extends React.Component{
 
 
     return(
+
+
       <div>
       <button  onClick={this.shownextpage} >next</button>
-
       <div>the page number is : {this.state.pagenumber}</div>
+
+      <div className="container">
+      <div className="row">
+      {components}
+      </div>
+      </div>
 
 
       <div class="container">
-      <table class="table table-condensed" id="mytable">
-      <tbody>
-      <tr>
-      <div>{components}</div>
-      </tr>
-      </tbody>
-      </table>
+
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
       </div>
+</div>
+
+
       </div>
 
     )
