@@ -1,4 +1,5 @@
 import React from 'react';
+import { option,ControlLabel,FormControl,FormGroup,form, Button } from "react-bootstrap";
 
 
 export default class Newpost extends React.Component {
@@ -46,10 +47,50 @@ postsubmit(){
     render(){
         return(
             <div>
-            text :<input type="text" id="texti" onChange={this.inputtext} />
-            <button  onClick={this.postsubmit}>submit</button>
-            <p>the text is :{this.state.text}</p>
+            <div className="container">
+            <div className="row">
+            <div className="col-sm-1" ></div>
 
+            <div className="col-sm-10" >
+
+            <form>
+
+            <span style={{fontSize:'20px'}}>Choose a Category</span>
+            {'         '}
+                <FormGroup controlId="formControlsSelect" style={{width:'130px'}} >
+                {'         '}
+               <FormControl componentClass="select" placeholder="select">
+                 <option value="select">dream</option>
+                 <option value="select">fantasy</option>
+                 <option value="select">first experience</option>
+                 <option value="select">guilt</option>
+                 <option value="select">lie</option>
+                 <option value="select">pain</option>
+                 <option value="select">question</option>
+                 <option value="select">random feeling</option>
+                 <option value="select">truth</option>
+                 <option value="select">wild experience</option>
+                 <option value="select">other</option>
+
+
+               </FormControl>
+               </FormGroup>
+
+               <FormGroup bsSize="large">
+                 <FormControl type="text" placeholder="confession text" onChange={this.inputtext} />
+               </FormGroup>
+
+              </form>
+               <Button onClick={this.postsubmit}>CONFESS</Button>
+
+
+
+
+            </div>
+            <div className="col-sm-1" ></div>
+
+            </div>
+            </div>
             </div>
 
         )

@@ -1,54 +1,58 @@
 import React from 'react';
 import "react-bootstrap"
+import ModalShow from './show_post_modal.js';
+import { Pager } from "react-bootstrap";
+
 var postsjson;
 var gotthejson =0;
-var components =[];
+var items =[];
+var row=[];
+var table=[];
 
 
 
-export default class Pager extends React.Component{
+
+export default class Pages extends React.Component{
   constructor(){
     super();
     this.state={
-      pagenumber:1
+      pagenumber:0
     }
 
 
-    fetch('http://localhost:8080/api/posts/?format=json', {
-      method: 'get'
-    }).then(function(response) {
-      return  response.json().then(function(json){
-        postsjson=json;
-
-
-      })
-
-    });
 
     this.shownextpage =this.shownextpage.bind(this);
+    this.showpage =this.showpage.bind(this);
+
+
   }
 
 
 
 
-  shownextpage(){
-    console.log(this.state.pagenumber);
-    var jsonlength = Object.keys(postsjson).length/10 | 0;
-    var pagenumber = this.state.pagenumber;
-    components =[];
-    for(var i = pagenumber*6  ;  i > (pagenumber*6)-6 ;  i--   ){
-      var text =postsjson[i]["text"];
-      var confessmode = postsjson[i]["confessmode"];
-      var modes= {"d":"A-DREAM.png","f":"A-DREAM.png","fi":"A-FIRST-EXPERIENCE.png","g":"A-GUILT.png","l":"A-LIE.png","p":"A-PAIN.png","q":"A-QUESTION.png","r":"A-RANDOM-FEELING.png","t":"A-TRUTH.png","w":"A-WILD-EXPERIENCE.png","o":"OTHER.png"}
-      var imgurl= "file:///home/hobbyist/t/confess/confess/front-end/src/images/"+modes[confessmode];
-      var summery=text.slice(0,150) + " ...";
-      components.push(
+
+  showpage(p){
+    for(var r=p;r<p+3;r++){
+      items=[];
+      row=[];
 
 
-        <div className="col-sm-2">
-        <a data-toggle="modal" data-target="#myModal"  class="thumbnail">
+    for(var i = r*3  ;  i > (r*3)-3 ;  i--   ){
+      const text =postsjson[i]["text"];
+      const confessmode = postsjson[i]["confessmode"];
+      const modes= {"d":"A-DREAM.png","f":"A-FANTASY.png","fi":"A-FIRST-EXPERIENCE.png","g":"A-GUILT.png","l":"A-LIE.png","p":"A-PAIN.png","q":"A-QUESTION.png","r":"A-RANDOM-FEELING.png","t":"A-TRUTH.png","w":"A-WILD-EXPERIENCE.png","o":"OTHER.png"}
+      const imgurl= "file:///home/hobbyist/t/confess/confess/front-end/src/images/"+modes[confessmode];
+      const summery=text.slice(0,150) + " ...";
+      var key= "post"+i;
+      const mode=modes[confessmode].slice(0,-4);
+      items.push(
+
+
+        <div className="col-sm-3" key={key} >
+        <a    onClick={()=>{this.props.showthepost(text,true,mode)}} >
          <img src={imgurl} />
-        { summery}
+         <span>{mode}</span>
+      <div>  { summery}</div>
         </a>
         </div>
 
@@ -56,23 +60,53 @@ export default class Pager extends React.Component{
 
 
       )
+      if ((i-1)%3 == 0){
+        row.push(<div className="row">{items}</div>);
+      }
+
+
     }
-    this.setState({pagenumber:this.state.pagenumber+1});
-    if (this.state.pagenumber == jsonlength){
-      this.setState({pagenumber:1});
-      console.log("back to first");
-    }
 
 
 
+table.push(row);
 
-
+}
   }
 
 
+shownextpage(a){
+
+  var jsonlength = Object.keys(postsjson).length/10 | 0;
+  if (this.state.pagenumber == jsonlength){
+    this.setState({pagenumber:0});
+    console.log("back to first");
+  }
+  const p = 3* this.state.pagenumber +1
+  table=[];
+  this.showpage(p);
+  this.setState({pagenumber:this.state.pagenumber+a});
+  if(this.state.pagenumber==0){
+    a=0;
+  }
+
+}
+
+componentDidMount()
+{
+  fetch('http://localhost:8080/api/posts/?format=json', {
+    method: 'get'
+  }).then(function(response) {
+    return  response.json().then(function(json){
+      postsjson=json;
 
 
+    })
 
+  });
+
+
+}
 
   render(){
 
@@ -81,37 +115,16 @@ export default class Pager extends React.Component{
 
 
       <div>
-      <button  onClick={this.shownextpage} >next</button>
-      <div>the page number is : {this.state.pagenumber}</div>
+
 
       <div className="container">
-      <div className="row">
-      {components}
+      {table}
+      <Pager>
+  <Pager.Item previous onClick={()=> this.shownextpage(-1) }>&larr; Previous Page</Pager.Item>
+  <Pager.Item next onClick={()=> this.shownextpage(1) }>Next Page &rarr;</Pager.Item>
+</Pager>
       </div>
-      </div>
 
-
-      <div class="container">
-
-      <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Modal Header</h4>
-            </div>
-            <div class="modal-body">
-              <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-</div>
 
 
       </div>
