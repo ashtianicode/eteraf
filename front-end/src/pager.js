@@ -1,14 +1,11 @@
 import React from 'react';
 import "react-bootstrap"
 import ModalShow from './show_post_modal.js';
-import { Pager } from "react-bootstrap";
+import { Pagination } from "react-bootstrap";
 
-var postsjson;
-var gotthejson =0;
 var items =[];
 var row=[];
 var table=[];
-
 
 
 
@@ -16,23 +13,44 @@ export default class Pages extends React.Component{
   constructor(){
     super();
     this.state={
-      pagenumber:0
+      activePage:1,
+      data:{},
+      jsonlength:1,
+
     }
 
 
 
+    this.handleSelect= this.handleSelect.bind(this);
     this.shownextpage =this.shownextpage.bind(this);
     this.showpage =this.showpage.bind(this);
 
 
   }
 
+  componentDidMount() {
+
+
+  fetch('http://localhost:8080/api/posts/?format=json', {
+    method: 'get'
+  }).then(response => {
+    return  response.json().then(json => {
+      const postsjson=json;
+      this.setState({data:postsjson,jsonlength : Object.keys(postsjson).length/10 | 0});
+      this.shownextpage(1);
+      this.forceUpdate();
 
 
 
+    })
+
+  });
+}
 
   showpage(p){
-    for(var r=p;r<p+3;r++){
+
+    const postsjson = this.state.data;
+      for(var r=p;r<p+3;r++){
       items=[];
       row=[];
 
@@ -67,62 +85,53 @@ export default class Pages extends React.Component{
 
     }
 
-
-
 table.push(row);
 
 }
   }
 
 
-shownextpage(a){
 
-  var jsonlength = Object.keys(postsjson).length/10 | 0;
-  if (this.state.pagenumber == jsonlength){
-    this.setState({pagenumber:0});
-    console.log("back to first");
+
+
+
+
+
+
+  shownextpage(eventKey){
+    const p = (3* (eventKey-1)) +1;
+    table=[];
+    this.showpage(p);
+
   }
-  const p = 3* this.state.pagenumber +1
-  table=[];
-  this.showpage(p);
-  this.setState({pagenumber:this.state.pagenumber+a});
-  if(this.state.pagenumber==0){
-    a=0;
+
+
+  handleSelect(eventKey) {
+    this.setState({
+      activePage: eventKey // fuck! the setSate is asynchronous
+
+    });
+
+this.shownextpage(eventKey);
   }
 
-}
 
-componentDidMount()
-{
-  fetch('http://localhost:8080/api/posts/?format=json', {
-    method: 'get'
-  }).then(function(response) {
-    return  response.json().then(function(json){
-      postsjson=json;
+    render(){
 
 
-    })
-
-  });
-
-
-}
-
-  render(){
-
-
-    return(
+      return(
 
 
       <div>
 
 
-      <div className="container">
+      <div className="container" >
       {table}
-      <Pager>
-  <Pager.Item previous onClick={()=> this.shownextpage(-1) }>&larr; Previous Page</Pager.Item>
-  <Pager.Item next onClick={()=> this.shownextpage(1) }>Next Page &rarr;</Pager.Item>
-</Pager>
+      <Pagination
+        bsSize="medium"
+        items={this.state.jsonlength}
+        activePage={this.state.activePage}
+        onSelect={this.handleSelect} />
       </div>
 
 
