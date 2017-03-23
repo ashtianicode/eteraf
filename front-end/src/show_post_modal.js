@@ -7,7 +7,7 @@ import { Modal, Button ,ButtonToolbar } from "react-bootstrap";
 
   render() {
 
-const imgurl= "file:///home/hobbyist/t/confess/confess/front-end/src/images/"+this.props.confessmode+".png";
+const imgurl= "http://localhost/confess/confess/front-end/src/images/"+this.props.confessmode+".png";
     return (
       <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
         <Modal.Header closeButton>

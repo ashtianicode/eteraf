@@ -6,23 +6,32 @@ export default class Newpost extends React.Component {
   constructor(){
     super();
     this.state={
-      text : ""
+      text : "",
+      mode:"d"
     }
-    this.inputtext= this.inputtext.bind(this);
+    this.changehandler= this.changehandler.bind(this);
     this.postsubmit= this.postsubmit.bind(this);
 
     }
 
 
-inputtext(event){
-  var texti = event.target.value;
-  this.setState({text:texti})
+changehandler(event){
+  var value = event.target.value;
+  var id = event.target.id;
+
+
+  if(id=="text"){
+  this.setState({text:value});}
+  else if (id=="mode"){
+    this.setState({mode:value});
+
+  }
 }
 postsubmit(){
 
   var data = new FormData();
   data.append("text",this.state.text);
-  data.append("mode", "d");
+  data.append("mode", this.state.mode);
 
   var xhr = new XMLHttpRequest();
   xhr.withCredentials = false;
@@ -40,9 +49,12 @@ postsubmit(){
   xhr.send(data);
 
 
-
+this.props.refreshafterpost();
 
 }
+
+
+
 
     render(){
         return(
@@ -52,32 +64,31 @@ postsubmit(){
             <Jumbotron>
 
             <div className="row">
-            <div className="col-sm-1" ></div>
             <div className="col-sm-10" >
 
             <form>
 
             <span style={{fontSize:'20px'}}>Choose a Category</span>
-                <FormGroup controlId="formControlsSelect" style={{width:'130px'}} >
-               <FormControl componentClass="select" placeholder="select">
-                 <option value="select">dream</option>
-                 <option value="select">fantasy</option>
-                 <option value="select">first experience</option>
-                 <option value="select">guilt</option>
-                 <option value="select">lie</option>
-                 <option value="select">pain</option>
-                 <option value="select">question</option>
-                 <option value="select">random feeling</option>
-                 <option value="select">truth</option>
-                 <option value="select">wild experience</option>
-                 <option value="select">other</option>
+                <FormGroup controlId="formControlsSelect" style={{width:'130px'}} controlId	="mode">
+               <FormControl componentClass="select" placeholder="select" onChange={this.changehandler} >
+                 <option value="d">dream</option>
+                 <option value="f">fantasy</option>
+                 <option value="fi">first experience</option>
+                 <option value="g">guilt</option>
+                 <option value="l">lie</option>
+                 <option value="p">pain</option>
+                 <option value="q">question</option>
+                 <option value="r">random feeling</option>
+                 <option value="t">truth</option>
+                 <option value="w">wild experience</option>
+                 <option value="o">other</option>
 
 
                </FormControl>
                </FormGroup>
 
-               <FormGroup bsSize="large">
-                 <FormControl type="text" placeholder="confession text" onChange={this.inputtext} />
+               <FormGroup bsSize="large" controlId	="text">
+                 <FormControl type="text" placeholder="confession text" onChange={this.changehandler}  />
                </FormGroup>
 
               </form>
@@ -87,7 +98,6 @@ postsubmit(){
 
 
             </div>
-            <div className="col-sm-1" ></div>
 
             </div>
             </Jumbotron>

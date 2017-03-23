@@ -2,11 +2,12 @@ import React from 'react';
 import {render} from 'react-dom';
 import Pages from './pager.js'
 import Newpost from './Newpost.js';
-import NavBar from './navbar.js'
 import ModalShow from './show_post_modal.js'
+import Category from './categories.js'
 
 
-class Main extends React.Component{
+
+export default class Main extends React.Component{
 
   constructor(){
     super();
@@ -14,10 +15,14 @@ class Main extends React.Component{
           modalpoststate:false,
           modalposttext:"",
           confessmode:"",
+          counts:{}
     }
 
 
     this.showthepostmodal=this.showthepostmodal.bind(this);
+    this.categorynumbers=this.categorynumbers.bind(this);
+    this.refreshafterpost=this.refreshafterpost.bind(this);
+
   }
 
   showthepostmodal(summery,state,confessmode){
@@ -25,19 +30,31 @@ class Main extends React.Component{
    this.setState({modalpoststate: state,modalposttext:summery,confessmode:confessmode});
   }
 
+categorynumbers(c){
+this.setState({counts:c});
+
+}
+refreshafterpost(){
+  this.forceUpdate();
+
+}
+
 
 
     render(){
       return(
         <div>
-        <NavBar/>
-        <Newpost/>
-        <Pages showthepost={this.showthepostmodal}/>
-         <ModalShow showthepost={this.showthepostmodal} texti= {this.state.modalposttext}   modalpoststate= {this.state.modalpoststate} confessmode={this.state.confessmode} />
+
+
+
+
+ <Newpost refreshafterpost={this.refreshafterpost}/>
+ <Pages setnumbers= {this.categorynumbers} showthepost={this.showthepostmodal}/>
+  <ModalShow showthepost={this.showthepostmodal} texti= {this.state.modalposttext}   modalpoststate= {this.state.modalpoststate} confessmode={this.state.confessmode} />
+  <Category counts ={ this.state.counts}/>
         </div>
       )
     }
 
 
 }
-render(<Main/>,document.getElementById('main'));

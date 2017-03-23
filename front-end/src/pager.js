@@ -1,5 +1,4 @@
 import React from 'react';
-import "react-bootstrap"
 import ModalShow from './show_post_modal.js';
 import { Pagination } from "react-bootstrap";
 
@@ -24,6 +23,8 @@ export default class Pages extends React.Component{
     this.handleSelect= this.handleSelect.bind(this);
     this.shownextpage =this.shownextpage.bind(this);
     this.showpage =this.showpage.bind(this);
+    this.findgategorynumbers =this.findgategorynumbers.bind(this);
+
 
 
   }
@@ -42,10 +43,21 @@ export default class Pages extends React.Component{
 
 
 
+
     })
 
   });
 }
+
+findgategorynumbers(){
+  const data = this.state.data;
+const counts = {};
+  data.forEach(function(post){    counts[post["confessmode"]]=(counts[post["confessmode"]] || 0) + 1;    });
+this.props.setnumbers(counts);
+
+}
+
+
 
   showpage(p){
 
@@ -59,17 +71,17 @@ export default class Pages extends React.Component{
       const text =postsjson[i]["text"];
       const confessmode = postsjson[i]["confessmode"];
       const modes= {"d":"A-DREAM.png","f":"A-FANTASY.png","fi":"A-FIRST-EXPERIENCE.png","g":"A-GUILT.png","l":"A-LIE.png","p":"A-PAIN.png","q":"A-QUESTION.png","r":"A-RANDOM-FEELING.png","t":"A-TRUTH.png","w":"A-WILD-EXPERIENCE.png","o":"OTHER.png"}
-      const imgurl= "file:///home/hobbyist/t/confess/confess/front-end/src/images/"+modes[confessmode];
+      const imgurl= "http://localhost/confess/confess/front-end/src/images/"+modes[confessmode];
       const summery=text.slice(0,150) + " ...";
       var key= "post"+i;
       const mode=modes[confessmode].slice(0,-4);
       items.push(
 
 
-        <div className="col-sm-3" key={key} >
+        <div className="col-sm-3" key={key} id="postbox">
         <a    onClick={()=>{this.props.showthepost(text,true,mode)}} >
-         <img src={imgurl} />
-         <span>{mode}</span>
+         <img src={imgurl} /><span>  </span>
+         <span>{mode}</span><br />
       <div>  { summery}</div>
         </a>
         </div>
@@ -102,6 +114,8 @@ table.push(row);
     const p = (3* (eventKey-1)) +1;
     table=[];
     this.showpage(p);
+    this.findgategorynumbers()
+
 
   }
 
@@ -131,8 +145,11 @@ this.shownextpage(eventKey);
         bsSize="medium"
         items={this.state.jsonlength}
         activePage={this.state.activePage}
-        onSelect={this.handleSelect} />
+        onSelect={this.handleSelect}
+        bsClass='pagination' />
+
       </div>
+
 
 
 

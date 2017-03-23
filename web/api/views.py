@@ -4,5 +4,5 @@ from web.models import Post
 
 
 class PostsApiView(ListAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-publishdate')
     serializer_class = postserializer
